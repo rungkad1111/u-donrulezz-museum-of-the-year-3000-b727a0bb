@@ -13,6 +13,12 @@ import { mkdirSync, writeFileSync } from "node:fs";
 const line =
   "Do Not Disturb sign: a magic ward hung on doors to repel the cleaning spirits, who obeyed it without question.";
 
+// Runtime gate: the kit requires 1-200 characters. Fail loudly instead of
+// silently shipping an out-of-gate line.
+if (line.length < 1 || line.length > 200) {
+  throw new Error(`Entry line length ${line.length} is outside the 1-200 gate.`);
+}
+
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
 mkdirSync(outDir, { recursive: true });
